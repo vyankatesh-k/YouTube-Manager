@@ -1,17 +1,3 @@
-Perfect 👍
-Below is a **clean, formal, senior-engineer-grade authentication design document** written **exactly** the way it should live inside your GitHub repo as Markdown.
-
-You can save this as:
-
-```
-docs/authentication.md
-```
-
-No fluff. No shortcuts. This follows **industry best practices** and is **future-proof**.
-
----
-
-````md
 # Authentication & Authorization Design – AIM 2026
 
 ## Overview
