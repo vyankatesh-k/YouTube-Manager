@@ -1,3 +1,17 @@
+Perfect 👍
+Below is a **clean, formal, senior-engineer-grade authentication design document** written **exactly** the way it should live inside your GitHub repo as Markdown.
+
+You can save this as:
+
+```
+docs/authentication.md
+```
+
+No fluff. No shortcuts. This follows **industry best practices** and is **future-proof**.
+
+---
+
+````md
 # Authentication & Authorization Design – AIM 2026
 
 ## Overview
@@ -118,3 +132,147 @@ Request:
   "password": "StrongPassword@123",
   "username": "creator_name"
 }
+````
+
+Response:
+
+```json
+{
+  "user_id": "uuid"
+}
+```
+
+---
+
+### Login
+
+**POST `/auth/login`**
+
+Request:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "StrongPassword@123"
+}
+```
+
+Response:
+
+```json
+{
+  "access_token": "jwt-access-token",
+  "refresh_token": "secure-refresh-token",
+  "token_type": "bearer",
+  "expires_in": 900
+}
+```
+
+---
+
+### Refresh Access Token
+
+**POST `/auth/refresh`**
+
+Request:
+
+```json
+{
+  "refresh_token": "secure-refresh-token"
+}
+```
+
+Response:
+
+```json
+{
+  "access_token": "new-jwt-access-token",
+  "expires_in": 900
+}
+```
+
+---
+
+### Logout
+
+**POST `/auth/logout`**
+
+Request:
+
+```json
+{
+  "refresh_token": "secure-refresh-token"
+}
+```
+
+Behavior:
+
+* Refresh token is marked as revoked
+* Access tokens naturally expire
+
+---
+
+## Token Storage Strategy (Frontend)
+
+### Preferred (Web Applications)
+
+* Tokens stored in **HttpOnly, Secure cookies**
+* Protects against XSS attacks
+* Frontend never accesses raw tokens
+
+### Alternative (Development / API Clients)
+
+* Access token passed via `Authorization: Bearer`
+* Tokens stored in memory only
+* Refresh token handled securely
+
+---
+
+## Authorization Model
+
+* All protected endpoints require a valid access token
+* User identity is derived from token claims
+* Authorization logic is based on:
+
+  * `user_id`
+  * role flags (future enhancement)
+
+---
+
+## Security Considerations
+
+* Short-lived access tokens reduce exposure risk
+* Refresh token hashing prevents misuse if database is compromised
+* Token revocation allows secure logout
+* No sensitive data stored in JWT payload
+* HTTPS enforced for all authentication endpoints
+
+---
+
+## Extensibility & Future Enhancements
+
+The system is designed to support:
+
+* OAuth providers (Google, Microsoft)
+* Email verification workflows
+* Password reset flows
+* Multi-device session tracking
+* Role-based access control (RBAC)
+
+These can be added **without changing the core authentication flow**.
+
+---
+
+## Summary
+
+The AIM 2026 authentication system is:
+
+* Secure
+* Scalable
+* Maintainable
+* Industry-aligned
+* Ready for future growth
+
+It prioritizes correctness and long-term reliability over short-term convenience.
+
+```
